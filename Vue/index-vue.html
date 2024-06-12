@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <script type = "text/javascript" src="../Js/Vue2.js"></script>
+</head>
+<body>
+
+<!--创建一个容器 {{表达式}} -->
+<div id="root">
+    <h1>Hello {{msg}} {{msg.toUpperCase()}}</h1>
+
+    <hr>  <!--    // 横线-->
+    <h1>指令语法</h1>
+    <a v-bind:href="url">点我去百度</a>
+    <h1>data数据读取：{{name}}</h1>
+    <div>
+        单向数据绑定: <input type="text" v-bind:value="school.address"><br/>
+<!--        v-model只能适用于表单类元素，-->
+        双向数据绑定: <input type="text" v-model="school.name"><br/>
+        <!--简写 -->
+        单向数据绑定: <input type="text":value="school.address"><br/>
+        双向数据绑定: <input type="text" v-model="school.name"><br/>
+        <!-- 如下代码是错误的，因为v-model只能应用在表单类元素(输入类元素)上 -->
+        <!-- <h2 v-model:x="name">你好啊</h2>-->
+
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    Vue.config.productionTip = true
+    Vue.config.devtools = true
+
+    // 创建Vue实例
+    new Vue({
+        el: '#root', //指定el属性，用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串
+        data: {
+            msg: 'hello world',
+            age: 18,
+            flag: true,
+            url: "https://www.baidu.com",
+            name:"夏嘉",
+            school:{
+                name:"尚硅谷",
+                address:"北京"
+            }
+        }
+    })
+
+    // Vue模板语法有2大类:
+    //     1.插值语法:
+    //     功能:用于解析标签体内容。写法:{{xxx}}，xxx是js表达式，且可以直接读取到data中的所有属性、
+    //     2.指令语法:
+    //     功能:用于解析标签(包括:标签属性、标签体内容、绑定事件.....)
+    // 举例:v-bind:href="xxx”或 简写为 :href="xxx"，xxx同样要写js表达式.
+    // 且可以直接读取到data中的所有属性。
+    // 备注:Vue中有很多的指令，且形式都是:v-????，此处我们只是拿v-bind举个例子。
+
+</script>
+</body>
+</html>
