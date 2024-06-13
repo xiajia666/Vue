@@ -7,48 +7,79 @@
 </head>
 <body>
 
-<!--创建一个容器 {{表达式}} -->
+<!--// 创建一个容器 {{表达式}}-->
 <div id="root">
     <h1>Hello {{msg}} {{msg.toUpperCase()}}</h1>
-
-    <hr>  <!--    // 横线-->
+    <hr>  <!--横线-->
     <h1>指令语法</h1>
     <a v-bind:href="url">点我去百度</a>
     <h1>data数据读取：{{name}}</h1>
-    <div>
         单向数据绑定: <input type="text" v-bind:value="school.address"><br/>
-<!--        v-model只能适用于表单类元素，-->
+        <!--v-model只能适用于表单类元素，-->
         双向数据绑定: <input type="text" v-model="school.name"><br/>
+
         <!--简写 -->
-        单向数据绑定: <input type="text":value="school.address"><br/>
+        单向数据绑定: <input type="text" :value="school.address"><br/>
         双向数据绑定: <input type="text" v-model="school.name"><br/>
+
         <!-- 如下代码是错误的，因为v-model只能应用在表单类元素(输入类元素)上 -->
         <!-- <h2 v-model:x="name">你好啊</h2>-->
-
-    </div>
-
-
 </div>
 
+<!--//设置属性-->
+<script>
+    let person = {
+        name: '张三',
+        // age: 18,
+        sex: '男',
+        <!--    address: '北京'-->
+    }
+    Object.defineProperty(person, 'address', {value: '北京',
+        enumerable: true,// 可以被枚举，默认是false
+        writable: true,// 可以被修改，默认是false
+        configurable: true// 可以被删除，默认是false
+    })
+    Object.defineProperty(person, 'age', {
+        enumerable: true,// 可以被枚举，默认是false
+        //有人读取时触发get
+        get: function () {
+        console.log('有人读取了age属性')
+        return 18
+    },
+        //有人设置时触发set
+        set: function (value) {
+        console.log('有人设置了age属性，新值是', value)
+    }
+    })
+
+    for (let key in person) {
+        console.log(key, person[key])
+    }
+</script>
+
+
+
+<!--// 数据代理-->
+<script>
+    let obj = {x:100}
+    let obj2 = {y:200}
+    Object.defineProperty(obj2, 'x', { //设置属性
+        enumerable: true,// 可以被枚举，默认是false
+        get() {
+        return obj.x
+    },
+        set(value) {
+        obj.x = value
+    }
+})
+</script>
+
+
+
+<!--//创建Vue实例，绑定容器root-->
 <script type="text/javascript">
     Vue.config.productionTip = true
     Vue.config.devtools = true
-
-    // 创建Vue实例
-    new Vue({
-        el: '#root', //指定el属性，用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串
-        data: {
-            msg: 'hello world',
-            age: 18,
-            flag: true,
-            url: "https://www.baidu.com",
-            name:"夏嘉",
-            school:{
-                name:"尚硅谷",
-                address:"北京"
-            }
-        }
-    })
 
     // Vue模板语法有2大类:
     //     1.插值语法:
@@ -58,6 +89,44 @@
     // 举例:v-bind:href="xxx”或 简写为 :href="xxx"，xxx同样要写js表达式.
     // 且可以直接读取到data中的所有属性。
     // 备注:Vue中有很多的指令，且形式都是:v-????，此处我们只是拿v-bind举个例子。
+
+    // 创建Vue实例
+    const v = new Vue({
+        // el: '#root', //指定el属性，用于指定当前Vue实例为哪个容器服务，值通常为css选择器字符串
+
+        // data第一种写法
+        // data: {
+        //     msg: 'hello world',
+        //     age: 18,
+        //     flag: true,
+        //     url: "https://www.baidu.com",
+        //     name:"夏嘉",
+        //     school:{
+        //         name:"尚硅谷",
+        //         address:"北京"
+        //     }
+        // }
+
+        // data第二种写法
+        data: function() {
+            // console.log("data中的this：",this)  // this是Vue实例对象
+            return {
+                msg: 'hello world xiajia',
+                age: 18,
+                flag: true,
+                url: "https://www.baidu.com",
+                name: "夏嘉",
+                school: {
+                    name: "尚硅谷",
+                    address: "北京"
+                }
+            }
+        }
+    }
+    )
+    v.$mount("#root") //同el绑定
+
+
 
 </script>
 </body>
